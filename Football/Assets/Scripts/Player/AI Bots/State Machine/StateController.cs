@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class StateController : MonoBehaviour
+public abstract class StateController : PlayerBase
 {
     private IPlayerState _currentState;
     
@@ -10,6 +10,7 @@ public class StateController : MonoBehaviour
     public KickingState kickingState = new KickingState();
     public ReceivingState receivingState = new ReceivingState();
 
+    
     private void Start()
     {
         ChangeState(standingState);
@@ -36,9 +37,9 @@ public class StateController : MonoBehaviour
 
 public interface IPlayerState
 {
-    public void OnEnter(StateController state);
+    public void OnEnter(StateController stateController);
 
-    public void OnUpdate(StateController state);
+    public void OnUpdate(StateController stateController);
     
     /*public void OnStandingState(StateController state);
     public void OnRunningState(StateController state);
@@ -46,5 +47,5 @@ public interface IPlayerState
     public void OnKickingState(StateController state);
     public void OnReceivingState(StateController state);*/
     
-    public void OnExit(StateController state);
+    public void OnExit(StateController stateController);
 }

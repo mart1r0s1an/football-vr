@@ -1,30 +1,35 @@
 using UnityEngine;
 
-[CreateAssetMenu (fileName = "Creat Data", menuName = ("Player Type")), ] 
-public class PlayerScriptable : ScriptableObject
+namespace Scriptable
 {
-    [SerializeField] private int playerSpeed;
-    [SerializeField] private int kickForce;
-    [SerializeField] private int jumpForce;
-    [SerializeField] private float gravity;
-
-    public int PlayerSpeed 
+    [CreateAssetMenu (fileName = "Creat Data", menuName = ("Player Type")), ] 
+    
+    public class PlayerScriptable : ScriptableObject
     {
-        get { return playerSpeed; }
-    }
+        [SerializeField] private int playerSpeed;
+        [SerializeField] private int kickForce;
+        [SerializeField] private int jumpForce;
+        [SerializeField] private float gravity;
+        
+        
+        public int PlayerSpeed 
+        {
+            get { return playerSpeed; }
+        }
 
-    public int KickForce 
-    {
-        get { return kickForce; }
-    }
+        public int KickForce 
+        {
+            get { return kickForce; }
+        }
 
-    public int JumpForce 
-    {
-        get { return jumpForce; }
-    }
+        public int JumpForce 
+        {
+            get { return jumpForce; }
+        }
 
-    public float Gravity 
-    {
-        get { return gravity; }
-    }
+        public float Gravity 
+        {
+            get { return gravity; }
+        }
+    }   
 }
