@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class StandingState : IPlayerState
 {
-    public void OnEnter(StateController stateController)
+    public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
         
     }
 
-    public void OnUpdate(StateController stateController)
+    public void OnUpdate(StateController stateController, CharacterController characterController)
     {
         if (Input.GetKeyDown(KeyCode.D))
         {
@@ -15,7 +15,7 @@ public class StandingState : IPlayerState
         }
     }
     
-    public void OnExit(StateController stateController)
+    public void OnExit(StateController stateController, BaseAIBots baseAIBots)
     {
         
     }

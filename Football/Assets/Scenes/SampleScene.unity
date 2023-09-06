@@ -1221,6 +1221,7 @@ GameObject:
   - component: {fileID: 1559094985}
   - component: {fileID: 1559094984}
   - component: {fileID: 1559094983}
+  - component: {fileID: 1559094988}
   - component: {fileID: 1559094982}
   - component: {fileID: 1559094987}
   m_Layer: 0
@@ -1323,7 +1324,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1559094981}
-  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &1559094986
 Transform:
   m_ObjectHideFlags: 0
@@ -1333,8 +1334,8 @@ Transform:
   m_GameObject: {fileID: 1559094981}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.613, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 4.17, z: -18.23}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -1351,6 +1352,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c80037de41673ca4c97c0789b48117c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!143 &1559094988
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1559094981}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Height: 2
+  m_Radius: 0.5
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &1589882158
 PrefabInstance:
   m_ObjectHideFlags: 0
