@@ -80,7 +80,7 @@ public class BallManager : MonoBehaviour
     {
         _localClosestPlayer = null;
         float shortestDistance = Mathf.Infinity;
-
+        
         foreach (PlayerBase player in _players)
         {
             float distance = Vector3.Distance(player.transform.position, _ball.position);

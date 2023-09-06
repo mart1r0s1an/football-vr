@@ -1,7 +1,7 @@
 using Scriptable;
 using UnityEngine;
 
-public abstract class PlayerBase : MonoBehaviour
+public class PlayerBase : MonoBehaviour
 {
     #region Field
 
@@ -68,14 +68,29 @@ public abstract class PlayerBase : MonoBehaviour
         _vertical = UnityEngine.Input.GetAxis(_verticalInput);
     }
 
-    protected abstract void Movement();
+    protected virtual void Movement()
+    {
+        
+    }
 
-    protected abstract void BallKick(float kickForce);
+    protected virtual void BallKick(float kickForce)
+    {
+        
+    }
 
-    protected abstract void GroundCheck();
-    
-    protected abstract void Gravity();
+    protected virtual void GroundCheck()
+    {
+        
+    }
 
-    protected abstract void AnimationState();
+    protected virtual void Gravity()
+    {
+        
+    }
+
+    protected virtual void AnimationState()
+    {
+        
+    }
     
 }

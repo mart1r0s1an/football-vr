@@ -1,8 +1,11 @@
 using UnityEngine;
 
-public abstract class StateController : PlayerBase
+[RequireComponent(typeof(BaseAIBots))]
+public class StateController : MonoBehaviour
 {
     private IPlayerState _currentState;
+
+    private BaseAIBots _aiBots;
     
     public StandingState standingState = new StandingState();
     public RunningState runningState = new RunningState();
@@ -13,6 +16,9 @@ public abstract class StateController : PlayerBase
     
     private void Start()
     {
+        _aiBots = GetComponent<BaseAIBots>();
+        
+        
         ChangeState(standingState);
     }
     

@@ -9,9 +9,7 @@ public class GameManager : MonoBehaviour
     
     private void Awake()
     {
-        var players = FindObjectsOfType<PlayerBase>();
-        
-        foreach (var player in players)
+        foreach (PlayerBase player in FindObjectsOfType(typeof(PlayerBase)))
         {
             allPlayers.Add(player);
         }
