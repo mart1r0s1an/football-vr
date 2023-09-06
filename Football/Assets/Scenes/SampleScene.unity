@@ -1252,6 +1252,12 @@ MonoBehaviour:
   checkGroundPositionRadius: 0
   isGrounded: 0
   aIBotScriptable: {fileID: 11400000, guid: 72464af8f8e1d4140945c17b916a8829, type: 2}
+  BotType: 1
+  ForwardRightStartPosition: {fileID: 0}
+  ForwardLeftStartPosition: {fileID: 1830051551}
+  DefenderRightBackStartPosition: {fileID: 0}
+  DefenderLeftBackStartPosition: {fileID: 0}
+  GoalkeeperStartPosition: {fileID: 0}
 --- !u!135 &1559094983
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1693,6 +1699,37 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &1830051550
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1830051551}
+  m_Layer: 0
+  m_Name: Left
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1830051551
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1830051550}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -63.6, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1931372733
 GameObject:
   m_ObjectHideFlags: 0
@@ -2171,3 +2208,4 @@ SceneRoots:
   - {fileID: 1469607586}
   - {fileID: 316720454}
   - {fileID: 1559094986}
+  - {fileID: 1830051551}

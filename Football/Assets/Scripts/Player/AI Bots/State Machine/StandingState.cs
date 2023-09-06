@@ -4,7 +4,12 @@ public class StandingState : IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
-        
+        switch (baseAIBots.BotType)
+        {
+            case BotType.ForwardLeft:
+                stateController.transform.position = baseAIBots.ForwardLeftStartPosition.position;
+                break;
+        }
     }
 
     public void OnUpdate(StateController stateController, CharacterController characterController)
