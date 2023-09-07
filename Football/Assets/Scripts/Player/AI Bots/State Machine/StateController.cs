@@ -1,4 +1,3 @@
-using TMPro.EditorUtilities;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseAIBots))]
@@ -31,7 +30,7 @@ public class StateController : MonoBehaviour
     {
         if (_currentState != null)
         {
-            _currentState.OnUpdate(this, _characterController);
+            _currentState.OnUpdate(this, _characterController, _aiBots);
         }
     }
     
@@ -50,7 +49,7 @@ public interface IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots);
 
-    public void OnUpdate(StateController stateController, CharacterController characterController);
+    public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots);
     
     /*public void OnStandingState(StateController state);
     public void OnRunningState(StateController state);

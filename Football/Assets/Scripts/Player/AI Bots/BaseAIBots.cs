@@ -1,16 +1,22 @@
+using System;
 using Scriptable;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class BaseAIBots : PlayerBase
 {
-    [Space(10f)]
+    [Space(20f)]
     [SerializeField] private AIBotScriptable aIBotScriptable;
 
+    [Space(10f)] [Header("Ball")] 
+    public Transform Ball;
+    
+    [Space(10f)]
+    [Header("Bots type")]
     public BotType BotType;
     
     
-    [Space(10f)]
+    [Space(20f)]
+    [Header("Start Bots Positions")]
     #region StartPositions
 
     public Transform ForwardRightStartPosition;
@@ -22,7 +28,13 @@ public class BaseAIBots : PlayerBase
     #endregion
     
     private float _kickForce;
-    
+
+    public float RunSpeed
+    {
+        get { return aIBotScriptable.BotSpeed; }
+        set { aIBotScriptable.BotSpeed = value; }
+    }
+
     private void Start()
     {
         _kickForce = aIBotScriptable.KickForce;

@@ -7,7 +7,7 @@ public class PassingState : IPlayerState
         
     }
 
-    public void OnUpdate(StateController stateController, CharacterController characterController)
+    public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots)
     {
         
     }

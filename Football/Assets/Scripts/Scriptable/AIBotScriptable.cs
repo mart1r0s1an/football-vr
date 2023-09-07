@@ -6,13 +6,14 @@ namespace Scriptable
     
     public class AIBotScriptable : ScriptableObject
     {
-        [SerializeField] private int botSpeed;
+        [SerializeField] private float botSpeed;
         [SerializeField] private int kickForce;
         [SerializeField] private float gravity;
 
-        public int BotSpeed
+        public float BotSpeed
         {
             get { return botSpeed; }
+            set{}
         }
 
         public int KickForce 
