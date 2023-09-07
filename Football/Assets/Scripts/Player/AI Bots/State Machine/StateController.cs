@@ -51,11 +51,5 @@ public interface IPlayerState
 
     public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots);
     
-    /*public void OnStandingState(StateController state);
-    public void OnRunningState(StateController state);
-    public void OnPassingState(StateController state);
-    public void OnKickingState(StateController state);
-    public void OnReceivingState(StateController state);*/
-    
     public void OnExit(StateController stateController, BaseAIBots baseAIBots);
 }

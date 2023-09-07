@@ -34,7 +34,26 @@ public class BaseAIBots : PlayerBase
         get { return aIBotScriptable.BotSpeed; }
         set { aIBotScriptable.BotSpeed = value; }
     }
+    
+    #region BotAnimtion
 
+    [Space(20f)]
+    [Header("Animation")]
+    public Animator BotAnimatorController;
+    [HideInInspector] public int IsRunningWithOutBallHash;
+    [HideInInspector] public int IsRunningWithBallHash;
+    [HideInInspector] public int IsPassingBallHash;
+
+    #endregion
+
+    private void Awake()
+    {
+        IsRunningWithOutBallHash = Animator.StringToHash("isRunningWithOutBall");
+        IsRunningWithBallHash = Animator.StringToHash("isRunningWithBall");
+        IsPassingBallHash = Animator.StringToHash("isPassing");
+    }
+    
+    
     private void Start()
     {
         _kickForce = aIBotScriptable.KickForce;
