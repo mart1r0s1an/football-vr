@@ -7,7 +7,10 @@ public class BaseAIBots : PlayerBase
     [Space(20f)]
     [SerializeField] private AIBotScriptable aIBotScriptable;
 
-    [Space(10f)] [Header("Ball")] 
+    [Space(10f)] 
+    [Header("Ball and Goals")]
+    public Transform FirstHalfGoalPosition;
+    public Transform SecondHalfGoalPosition;
     public Transform Ball;
     
     [Space(10f)]
@@ -28,6 +31,18 @@ public class BaseAIBots : PlayerBase
     #endregion
     
     private float _kickForce;
+
+    public float KickBallForce
+    {
+        get
+        {
+            return _kickForce;
+        } 
+        private set
+        {
+            _kickForce = value;
+        }
+    }
 
     public float RunSpeed
     {
@@ -57,14 +72,6 @@ public class BaseAIBots : PlayerBase
     private void Start()
     {
         _kickForce = aIBotScriptable.KickForce;
-        
-        Debug.Log(_kickForce);
-    }
-    
-    
-    protected override void Movement()
-    {
-        
     }
 }
 

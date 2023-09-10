@@ -4,7 +4,7 @@ public class StandingState : IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
-        
+        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
     }
 
     public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots)

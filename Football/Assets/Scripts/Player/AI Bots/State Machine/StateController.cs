@@ -10,7 +10,8 @@ public class StateController : MonoBehaviour
     public PassingState passingStat = new PassingState();
     public KickingState kickingState = new KickingState();
     public ReceivingState receivingState = new ReceivingState();
-
+    public AttackState attackState = new AttackState();
+    
     #endregion
     
     private IPlayerState _currentState;

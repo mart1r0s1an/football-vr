@@ -43,10 +43,10 @@ public class RunningState : IPlayerState
         
                 baseAIBots.transform.position += moveSpeed;
                 baseAIBots.transform.LookAt(baseAIBots.Ball);
-
-                Debug.Log(distanceToBall);
+                
                 if (distanceToBall < 1.3f)
                 {
+                    baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
                     stateController.ChangeState(stateController.receivingState);
                 }
                 break;
