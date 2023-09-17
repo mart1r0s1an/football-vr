@@ -64,7 +64,7 @@ public class FieldPlayer : PlayerBase
     {
         if (BallManager.Instance.BallAttached)
         {
-            BallManager.Instance.KickTheBall(kickForce);
+            //BallManager.Instance.KickTheBall(kickForce, 0.5f);
         }
 
         KickTheBall = false;

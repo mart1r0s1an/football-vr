@@ -1,5 +1,6 @@
 using Scriptable;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerBase : MonoBehaviour
 {
@@ -27,6 +28,20 @@ public class PlayerBase : MonoBehaviour
         set
         {
             _kickTheBall = value;
+        }
+    }
+
+    private bool _hasBall;
+    
+    public bool HasBall
+    {
+        get
+        {
+            return _hasBall;
+        }
+        set
+        {
+            _hasBall = value;
         }
     }
     

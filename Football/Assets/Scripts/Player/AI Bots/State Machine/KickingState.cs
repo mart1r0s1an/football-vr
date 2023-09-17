@@ -7,8 +7,12 @@ public class KickingState : IPlayerState
         baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsPassingBallHash, true);
         
         BallManager.Instance.KickTheBall(baseAIBots.KickBallForce);
+        BallManager.Instance.DetachBall(baseAIBots.transform);
+
+        Debug.Log(baseAIBots.HasBall);
         
-        stateController.ChangeState(stateController.standingState);
+        
+        stateController.ChangeState(stateController.standingState, 2f);
     }
 
     public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots)

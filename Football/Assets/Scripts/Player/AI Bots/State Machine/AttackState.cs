@@ -28,7 +28,7 @@ public class AttackState : IPlayerState
                 {
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
-                    stateController.ChangeState(stateController.kickingState);
+                    stateController.ChangeState(stateController.kickingState, 0f);
                 }
                 break;
             
@@ -42,7 +42,9 @@ public class AttackState : IPlayerState
                 break;
             
             case BotType.DefenderRightBack:
-               
+                Debug.Log("Do something cool here");
+                
+                
                 break;
         }
     }

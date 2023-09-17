@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 namespace Scriptable
 {
@@ -7,6 +8,7 @@ namespace Scriptable
     public class AIBotScriptable : ScriptableObject
     {
         [SerializeField] private float botSpeed;
+        [SerializeField] private float patrollingRunSpeed;
         [SerializeField] private int kickForce;
         [SerializeField] private float gravity;
 
@@ -14,6 +16,17 @@ namespace Scriptable
         {
             get { return botSpeed; }
             set{}
+        }
+
+        public float PatrollingRunSpeed {
+            get
+            {
+                return patrollingRunSpeed;
+            }
+            set
+            {
+                
+            } 
         }
 
         public int KickForce 

@@ -13,5 +13,6 @@ MonoBehaviour:
   m_Name: AI Player
   m_EditorClassIdentifier: 
   botSpeed: 12
+  patrollingRunSpeed: 5
   kickForce: 100
   gravity: 9.85

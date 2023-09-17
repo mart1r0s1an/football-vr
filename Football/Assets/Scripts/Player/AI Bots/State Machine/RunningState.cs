@@ -47,7 +47,7 @@ public class RunningState : IPlayerState
                 if (distanceToBall < 1.3f)
                 {
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
-                    stateController.ChangeState(stateController.receivingState);
+                    stateController.ChangeState(stateController.receivingState, 0f);
                 }
                 break;
             
@@ -61,7 +61,23 @@ public class RunningState : IPlayerState
                 break;
             
             case BotType.DefenderRightBack:
-               
+                baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
+                Vector3 movedirectionForRightDefender = baseAIBots.Ball.position
+                                        - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+        
+                float distanceToBallForRightDefender = movedirectionForRightDefender.magnitude;
+        
+                Vector3 moveSpeedRightDefender = new Vector3(movedirectionForRightDefender.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                    movedirectionForRightDefender.normalized.z * 10 * Time.deltaTime);
+        
+                baseAIBots.transform.position += moveSpeedRightDefender;
+                baseAIBots.transform.LookAt(baseAIBots.Ball);
+                
+                if (distanceToBallForRightDefender < 1.3f)
+                {
+                    baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
+                    stateController.ChangeState(stateController.receivingState, 0f);
+                }
                 break;
         }
     }

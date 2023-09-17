@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseAIBots))]
@@ -11,6 +12,7 @@ public class StateController : MonoBehaviour
     public KickingState kickingState = new KickingState();
     public ReceivingState receivingState = new ReceivingState();
     public AttackState attackState = new AttackState();
+    public PatrollingState patrollingState = new PatrollingState();
     
     #endregion
     
@@ -23,8 +25,7 @@ public class StateController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
         _aiBots = GetComponent<BaseAIBots>();
         
-        
-        ChangeState(standingState);
+        ChangeState(standingState, 0f);
     }
     
     private void Update()
@@ -35,14 +36,21 @@ public class StateController : MonoBehaviour
         }
     }
     
-    public void ChangeState(IPlayerState newState)
+    public void ChangeState(IPlayerState newState, float time)
     {
+        StartCoroutine(Pause(time));
+        
         if (_currentState != null)
         {
             _currentState.OnExit(this, _aiBots);
         }
         _currentState = newState;
         _currentState.OnEnter(this, _aiBots);
+    }
+
+    private IEnumerator Pause(float time)
+    {
+        yield return new WaitForSeconds(time);
     }
 }
 

@@ -50,6 +50,12 @@ public class BaseAIBots : PlayerBase
         set { aIBotScriptable.BotSpeed = value; }
     }
     
+    public float PatrollingStateRunSpeed
+    {
+        get { return aIBotScriptable.PatrollingRunSpeed; }
+        set { aIBotScriptable.PatrollingRunSpeed = value; }
+    }
+    
     #region BotAnimtion
 
     [Space(20f)]
