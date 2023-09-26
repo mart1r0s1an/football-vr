@@ -5,11 +5,11 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public List<PlayerBase> allPlayers = new List<PlayerBase>();
+    public List<StateController> allPlayers = new List<StateController>();
     
     private void Awake()
     {
-        foreach (PlayerBase player in FindObjectsOfType(typeof(PlayerBase)))
+        foreach (StateController player in FindObjectsOfType(typeof(StateController)))
         {
             allPlayers.Add(player);
         }

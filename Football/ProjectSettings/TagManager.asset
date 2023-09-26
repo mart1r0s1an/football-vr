@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Bot
   - Goal
+  - BotOpponent
   layers:
   - Default
   - TransparentFX

@@ -11,7 +11,7 @@ public class BallManager : MonoBehaviour
     private Transform _localClosestPlayer;
     private Rigidbody _ballRigidbody;
     private Transform _attachedPlayer;
-    private List<PlayerBase> _players = new List<PlayerBase>();
+    private List<StateController> _players = new List<StateController>();
 
     private bool _ballAttached;
     
@@ -57,21 +57,6 @@ public class BallManager : MonoBehaviour
     
     private void Update()
     {
-        /*_closestPlayer = GetClosestPlayer();
-        
-        
-        if (_attachedPlayer == null && Vector3.Distance(_closestPlayer.position, _ball.position) <= attachDistance)
-        {
-            AttachBall(_closestPlayer);
-           
-            _ball.localPosition = new Vector3(0f, 0.1f,0.4f);
-        }
-        
-        else if (_attachedPlayer == _closestPlayer && Vector3.Distance(_closestPlayer.position, _ball.position) > attachDistance)
-        {
-            DetachBall();
-        }*/
-        
         UpdateBallSpeedAndRotation();
     }
 
@@ -80,7 +65,7 @@ public class BallManager : MonoBehaviour
         _localClosestPlayer = null;
         float shortestDistance = Mathf.Infinity;
         
-        foreach (PlayerBase player in _players)
+        foreach (StateController player in _players)
         {
             float distance = Vector3.Distance(player.transform.position, _ball.position);
             
@@ -98,32 +83,39 @@ public class BallManager : MonoBehaviour
     
     public void KickTheBall(float kickForce)
     {
-        Debug.Log("Kicked");
-        
-        attachDistance = 0;
-        _ballAttached = false;
         _ballRigidbody.isKinematic = false;
+        _ball.parent = null;
         
         Vector3 curveDirection = new Vector3(Random.Range(-.5f, .5f), Random.Range(.3f, .5f), 0f);
         Vector3 throwDirection = _attachedPlayer.transform.forward + curveDirection;
-        
         _ballRigidbody.AddForce(throwDirection * kickForce);
-        
-        _attachedPlayer = null;
+        _ballAttached = false;
+        attachDistance = 0;
         
         StartCoroutine(ChangeAttachDistance());
     }
 
+    public void PassTheBall(float passingForce)
+    {
+        _ballRigidbody.isKinematic = false;
+        _ball.parent = null;
+        
+        Vector3 throwDirection = _attachedPlayer.transform.forward;
+        _ballRigidbody.AddForce(throwDirection * passingForce);
+        _ballAttached = false;
+        attachDistance = 0;
+        
+        StartCoroutine(ChangeAttachDistance());
+    }
+    
+
     public void AttachBall(Transform player)
     {
+        _ball.SetParent(player);
+        player.GetComponent<BaseAIBots>().HasBall = true;
         _ballAttached = true;
         _attachedPlayer = player;
-        
-        player.GetComponent<PlayerBase>().HasBall = true;
-        player.GetComponent<PlayerBase>().KickTheBall = true;   
-        
         _ballRigidbody.isKinematic = true;
-        _ball.SetParent(player);
     }
     
     public void DetachBall(Transform player)
@@ -138,21 +130,9 @@ public class BallManager : MonoBehaviour
         
         _ball.SetParent(null);
         _ballRigidbody.isKinematic = false;
-    }
-
-    public void DetachBallWithSomeForce(Transform player)
-    {
-        player.GetComponent<PlayerBase>().HasBall = false;
-        _ball.SetParent(null);
-        attachDistance = 0;
-        _ballAttached = false;
-        _attachedPlayer = null;
-        _ball.SetParent(null);
         
-        _ballRigidbody.isKinematic = false;
-        _ballRigidbody.AddForce(transform.forward);
     }
-
+    
     
     private void UpdateBallSpeedAndRotation()
     {

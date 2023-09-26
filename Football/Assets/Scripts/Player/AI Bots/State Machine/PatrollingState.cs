@@ -1,67 +1,49 @@
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PatrollingState : IPlayerState
 {
     private bool _walkPointSet;
     private Vector3 _walkPoint;
-    private Transform _closestLocalPlayer;
-    private List<PlayerBase> _players = new List<PlayerBase>();
     
+    private float _shortestDistance;
+    private float _canPassTheBallDistance;
     
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
-        _players = GameManager.Instance.allPlayers;
-        
-        Debug.Log("hello from patrolling state");
+        _shortestDistance = stateController.AttackToTheAttackerWithTheBall;
     }
 
-    public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots)
+    public void OnUpdate(StateController stateController, BaseAIBots baseAIBots)
     {
-        Patroling(baseAIBots);
+        Patrolling(baseAIBots);
         
-        GetClosestPlayer(stateController, baseAIBots);
-        GetFreeBall(stateController, baseAIBots);
+        if (stateController.ClosestLocalPlayer != null)
+        {
+            GetClosestPlayer(stateController, baseAIBots);
+        }
+        
+        if (BallManager.Instance.transform.parent == null)
+        {
+            GetFreeBall(stateController, baseAIBots);
+        }
     }
 
     private void GetFreeBall(StateController stateController, BaseAIBots baseAIBots)
     {
-        //find ball if it is free and attack to the ball
-        
-        Transform ball = null;
-        float shortestDistance = 20f;
-        
         float distance = Vector3.Distance(baseAIBots.transform.position, BallManager.Instance.transform.position);
             
-        if (distance < shortestDistance)
+        if (distance < _shortestDistance)
         {
-            ball = BallManager.Instance.transform;
-
-            if (ball.parent == null)
+            if (!baseAIBots.HasBall)
             {
-                stateController.ChangeState(stateController.runningState, 0);
-                Debug.Log("I can get the ball right now mother fukcer");   
+                stateController.ChangeState(stateController.receivingState, 0f);
             }
         }
     }
 
-    private Transform GetClosestPlayer(StateController stateController, BaseAIBots baseAIBots)
+    private void GetClosestPlayer(StateController stateController, BaseAIBots baseAIBots)
     {
-        _closestLocalPlayer = null;
-        float shortestDistance = Mathf.Infinity;
-        
-        foreach (PlayerBase player in _players)
-        {
-            float distance = Vector3.Distance(player.transform.position, BallManager.Instance.transform.position);
-            
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                _closestLocalPlayer = player.transform;
-            }
-        }
-
-        if (_closestLocalPlayer.CompareTag("Bot") && _closestLocalPlayer.GetComponent<PlayerBase>().HasBall)
+        if (stateController.ClosestLocalPlayer.CompareTag("BotOpponent") && stateController.ClosestLocalPlayer.GetComponent<PlayerBase>().HasBall)
         {
             switch (baseAIBots.BotType)
             {
@@ -73,33 +55,52 @@ public class PatrollingState : IPlayerState
                     break;
             
                 case BotType.DefenderLeftBack:
-               
+                    baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
                 
+                    Vector3 moveDirectionForLeftBack = stateController.ClosestLocalPlayer.transform.position
+                                                       - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+        
+                    float distanceToPlayerForLeftBack = moveDirectionForLeftBack.magnitude;
+        
+                    Vector3 moveSpeedForLeftBack = new Vector3(moveDirectionForLeftBack.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                        moveDirectionForLeftBack.normalized.z * Time.deltaTime);
+        
+                    baseAIBots.transform.position += moveSpeedForLeftBack;
+                
+                    baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer.transform);
+                    
+                    
+                    if (distanceToPlayerForLeftBack <= 2f && stateController.ClosestLocalPlayer.GetComponent<PlayerBase>().HasBall)
+                    {
+                        BallManager.Instance.DetachBall(stateController.ClosestLocalPlayer);
+                        
+                        stateController.ChangeState(stateController.receivingState, 0f);
+                        
+                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, true);
+                    }
                     break;
             
                 case BotType.DefenderRightBack:
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
                 
-                    Vector3 movedirection = _closestLocalPlayer.transform.position
+                    Vector3 moveDirection = stateController.ClosestLocalPlayer.transform.position
                                             - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
-                    float distanceToPlayer = movedirection.magnitude;
+                    float distanceToPlayer = moveDirection.magnitude;
         
-                    Vector3 moveSpeed = new Vector3(movedirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
-                        movedirection.normalized.z * baseAIBots.RunSpeed * 3 * Time.deltaTime);
+                    Vector3 moveSpeed = new Vector3(moveDirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                        moveDirection.normalized.z * Time.deltaTime);
         
                     baseAIBots.transform.position += moveSpeed;
                 
-                    baseAIBots.transform.LookAt(_closestLocalPlayer.transform);
+                    baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer.transform);
                     
                     
-                    if (distanceToPlayer <= 2f && _closestLocalPlayer.GetComponent<PlayerBase>().HasBall)
+                    if (distanceToPlayer <= 2f && stateController.ClosestLocalPlayer.GetComponent<PlayerBase>().HasBall)
                     {
-                        BallManager.Instance.DetachBallWithSomeForce(_closestLocalPlayer);
-                        //stateController.ChangeState(stateController.);
+                        BallManager.Instance.DetachBall(stateController.ClosestLocalPlayer);
                         
-                        
-                        //BallManager.Instance.AttachBall(_localClosestPlayer);
+                        stateController.ChangeState(stateController.receivingState, 0f);
                         
                         baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, true);
                     }
@@ -107,45 +108,75 @@ public class PatrollingState : IPlayerState
             }
         }
         
-        else if (!_closestLocalPlayer.GetComponent<PlayerBase>().HasBall)
+        if (stateController.ClosestLocalPlayer.CompareTag("Bot") && !stateController.ClosestLocalPlayer.GetComponent<PlayerBase>().HasBall)
         {
-            Debug.Log("Do not attack");
-            return null;
+            switch (baseAIBots.BotType)
+            {
+                case BotType.ForwardLeft:
+                    
+                    break;
+            
+                case BotType.ForwardRight:
+                    
+                    break;
+            
+                case BotType.DefenderLeftBack:
+                    if (baseAIBots.HasBall)
+                    {
+                        baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer);
+
+                        stateController.ChangeState(stateController.passingState, 0f);
+                    }
+                    break;
+            
+                case BotType.DefenderRightBack:
+
+                    if (baseAIBots.HasBall)
+                    {
+                        baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer);
+
+                        stateController.ChangeState(stateController.passingState, 0f);
+                    }
+                    break;
+            }
         }
-        
-        return _closestLocalPlayer;
     }
     
-    private void Patroling(BaseAIBots botTransform)
+    private void Patrolling(BaseAIBots botTransform)
     {
-        if (!_walkPointSet) SearchWalkPoint(botTransform);
-
-        Vector3 movedirection = _walkPoint - new Vector3(botTransform.transform.position.x, 0, botTransform.transform.position.z);
+        if (!_walkPointSet) 
+            SearchWalkPoint(botTransform);
         
-        Vector3 moveSpeed = new Vector3(movedirection.normalized.x * botTransform.PatrollingStateRunSpeed * Time.deltaTime, 0,
-            movedirection.normalized.z * botTransform.PatrollingStateRunSpeed * Time.deltaTime);
+        Vector3 movedDirection = 
+            _walkPoint - new Vector3(botTransform.transform.position.x, 0, botTransform.transform.position.z);
+    
+        Vector3 moveSpeed = new Vector3(movedDirection.normalized.x * botTransform.PatrollingStateRunSpeed * Time.deltaTime, 0,
+            movedDirection.normalized.z * botTransform.PatrollingStateRunSpeed * Time.deltaTime);
 
         if (_walkPointSet)
         {
             botTransform.transform.position += moveSpeed;
             botTransform.transform.LookAt(_walkPoint);
         }
-        
+    
         Vector3 distanceToWalkPoint = botTransform.transform.position - _walkPoint;
-        
+    
         if (distanceToWalkPoint.magnitude < 1f)
             _walkPointSet = false;
     }
-        
+
     private void SearchWalkPoint(BaseAIBots botTransform)
     {
-        float randomZ = Random.Range(-10, 10);
-        float randomX = Random.Range(-10, 10);
-
-        _walkPoint = new Vector3(botTransform.transform.position.x + randomX, botTransform.transform.position.y, botTransform.transform.position.z + randomZ);
-
-        if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f))
-            _walkPointSet = true;
+        float randomZ = Random.Range(-15, 15);
+        float randomX = Random.Range(-15, 15);
+        
+        _walkPoint = new Vector3(botTransform.transform.position.x + randomX, 
+            botTransform.transform.position.y, botTransform.transform.position.z + randomZ);
+        
+        if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f, botTransform.groundLayer))
+        {
+            _walkPointSet = true;   
+        }
     }
     
     public void OnExit(StateController stateController, BaseAIBots baseAIBots)

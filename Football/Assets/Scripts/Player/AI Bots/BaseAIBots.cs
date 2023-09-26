@@ -1,4 +1,3 @@
-using System;
 using Scriptable;
 using UnityEngine;
 
@@ -16,6 +15,8 @@ public class BaseAIBots : PlayerBase
     [Space(10f)]
     [Header("Bots type")]
     public BotType BotType;
+
+    public LayerMask groundLayer;
     
     
     [Space(20f)]
@@ -72,12 +73,27 @@ public class BaseAIBots : PlayerBase
         IsRunningWithOutBallHash = Animator.StringToHash("isRunningWithOutBall");
         IsRunningWithBallHash = Animator.StringToHash("isRunningWithBall");
         IsPassingBallHash = Animator.StringToHash("isPassing");
-    }
-    
-    
-    private void Start()
-    {
+        
         _kickForce = aIBotScriptable.KickForce;
+        
+        switch (BotType)
+        {
+            case BotType.ForwardLeft:
+                transform.position = ForwardLeftStartPosition.position;
+                break;
+
+            case BotType.ForwardRight:
+                transform.position = ForwardRightStartPosition.position;
+                break;
+            
+            case BotType.DefenderLeftBack:
+                transform.position = DefenderLeftBackStartPosition.position;
+                break;
+            
+            case BotType.DefenderRightBack:
+                transform.position = DefenderRightBackStartPosition.position;
+                break;
+        }
     }
 }
 

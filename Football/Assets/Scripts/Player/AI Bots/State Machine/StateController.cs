@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(BaseAIBots))]
@@ -8,20 +9,67 @@ public class StateController : MonoBehaviour
 
     public StandingState standingState = new StandingState();
     public RunningState runningState = new RunningState();
-    public PassingState passingStat = new PassingState();
+    public PassingState passingState = new PassingState();
     public KickingState kickingState = new KickingState();
     public ReceivingState receivingState = new ReceivingState();
     public AttackState attackState = new AttackState();
     public PatrollingState patrollingState = new PatrollingState();
     
     #endregion
+
+    #region Distances
+    [SerializeField] private float patrollingDistance;
+    [SerializeField] private float attackToTheAttackerWithTheBall;
+    [SerializeField] private float attackToTheBall;
+    [SerializeField] private float canPassTheBallDistance;
     
+    
+    public float PatrollingDistance
+    {
+        get
+        {
+            return patrollingDistance;
+        }
+        set
+        {
+            patrollingDistance = value;
+        }
+    }
+    public float AttackToTheAttackerWithTheBall
+    {
+        get
+        {
+            return attackToTheAttackerWithTheBall;
+        }
+        set
+        {
+            attackToTheAttackerWithTheBall = value;
+        }
+    }
+    public float AttackToTheBall
+    {
+        get
+        {
+            return attackToTheBall;
+        }
+        set
+        {
+            attackToTheBall = value;
+        }
+    }
+    
+    public Transform ClosestLocalPlayer { get; set; }
+    
+    #endregion
     private IPlayerState _currentState;
     private BaseAIBots _aiBots;
     private CharacterController _characterController;
+    private List<StateController> _players = new List<StateController>();
     
     private void Start()
     {
+        ClosestLocalPlayer = null;
+        _players = GameManager.Instance.allPlayers;
         _characterController = GetComponent<CharacterController>();
         _aiBots = GetComponent<BaseAIBots>();
         
@@ -30,9 +78,19 @@ public class StateController : MonoBehaviour
     
     private void Update()
     {
+        foreach (StateController player in _players)
+        {
+            var distance = (player.transform.position - transform.position).magnitude;
+
+            if (distance < canPassTheBallDistance && player.CompareTag("Bot") && player != this)
+            {
+                ClosestLocalPlayer = player.transform;
+            }
+        }
+        
         if (_currentState != null)
         {
-            _currentState.OnUpdate(this, _characterController, _aiBots);
+            _currentState.OnUpdate(this, _aiBots);
         }
     }
     
@@ -52,13 +110,25 @@ public class StateController : MonoBehaviour
     {
         yield return new WaitForSeconds(time);
     }
+    
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, 35);
+        
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, 25);
+        
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, 15);
+    }
 }
 
 public interface IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots);
 
-    public void OnUpdate(StateController stateController, CharacterController characterController, BaseAIBots baseAIBots);
+    public void OnUpdate(StateController stateController, BaseAIBots baseAIBots);
     
     public void OnExit(StateController stateController, BaseAIBots baseAIBots);
 }
