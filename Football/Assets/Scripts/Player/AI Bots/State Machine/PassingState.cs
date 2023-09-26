@@ -1,5 +1,3 @@
-using UnityEngine;
-
 public class PassingState : IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
@@ -10,6 +8,8 @@ public class PassingState : IPlayerState
         {
             BallManager.Instance.PassTheBall(baseAIBots.KickBallForce);
             BallManager.Instance.DetachBall(baseAIBots.transform);
+
+            stateController.AlreadyPassed = true;
             
             stateController.ChangeState(stateController.standingState, 0f);
         }

@@ -22,7 +22,7 @@ public class PatrollingState : IPlayerState
             GetClosestPlayer(stateController, baseAIBots);
         }
         
-        if (BallManager.Instance.transform.parent == null)
+        if (BallManager.Instance.transform.parent == null && !stateController.AlreadyPassed)
         {
             GetFreeBall(stateController, baseAIBots);
         }
@@ -125,6 +125,8 @@ public class PatrollingState : IPlayerState
                     {
                         baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer);
 
+                        BallManager.Instance.transform.parent = stateController.ClosestLocalPlayer;
+                        
                         stateController.ChangeState(stateController.passingState, 0f);
                     }
                     break;
@@ -134,7 +136,7 @@ public class PatrollingState : IPlayerState
                     if (baseAIBots.HasBall)
                     {
                         baseAIBots.transform.LookAt(stateController.ClosestLocalPlayer);
-
+                        
                         stateController.ChangeState(stateController.passingState, 0f);
                     }
                     break;

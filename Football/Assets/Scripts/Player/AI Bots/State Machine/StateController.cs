@@ -59,7 +59,8 @@ public class StateController : MonoBehaviour
     }
     
     public Transform ClosestLocalPlayer { get; set; }
-    
+    public bool AlreadyPassed { get; set; }
+
     #endregion
     private IPlayerState _currentState;
     private BaseAIBots _aiBots;
