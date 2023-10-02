@@ -7,16 +7,13 @@ public class ReceivingState : IPlayerState
         switch (baseAIBots.BotType)
         {
             case BotType.ForwardLeft:
-                //BallManager.Instance.AttachBall(baseAIBots.transform);
-                //stateController.ChangeState(stateController.attackState, 0f);
                 break;
             
             case BotType.ForwardRight:
-                //BallManager.Instance.AttachBall(baseAIBots.transform);
+                
                 break;
             
             case BotType.DefenderRightBack:
-                //MoveToTheBall(stateController, baseAIBots);
                 break;
             
             case BotType.DefenderLeftBack:

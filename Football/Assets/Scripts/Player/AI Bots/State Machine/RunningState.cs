@@ -32,21 +32,19 @@ public class RunningState : IPlayerState
         {
             case BotType.ForwardLeft:
                 baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
-                Vector3 movedirection = baseAIBots.Ball.position
+                Vector3 moveDirection = baseAIBots.Ball.position
                                         - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
-                float distanceToBall = movedirection.magnitude;
+                float distanceToBall = moveDirection.magnitude;
         
-                Vector3 moveSpeed = new Vector3(movedirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
-                    movedirection.normalized.z * 10 * Time.deltaTime);
+                Vector3 moveSpeed = new Vector3(moveDirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                    moveDirection.normalized.z * 10 * Time.deltaTime);
         
                 baseAIBots.transform.position += moveSpeed;
                 baseAIBots.transform.LookAt(baseAIBots.Ball);
                 
                 if (distanceToBall < 1.3f)
                 {
-                    Debug.Log("get the ball");
-                    //baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
                     stateController.ChangeState(stateController.receivingState, 0f);
                 }
                 break;

@@ -1,10 +1,20 @@
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class AttackState : IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
+        Debug.Log(stateController.ClosestLocalPlayerToTheGoal);
+
+        if (Random.Range(0,2) == 0)
+        {
+            baseAIBots.transform.LookAt(stateController.ClosestLocalPlayerToTheGoal);
+            stateController.ChangeState(stateController.passingState, 0f);
+        }
+        else
+        {
+            return;
+        }
     }
     
     public void OnUpdate(StateController stateController, BaseAIBots baseAIBots)

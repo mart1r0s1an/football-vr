@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class PatrollingState : IPlayerState
@@ -7,7 +8,7 @@ public class PatrollingState : IPlayerState
     
     private float _shortestDistance;
     private float _canPassTheBallDistance;
-    
+    private float _timeBoolSetTrue = 3f;
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
         _shortestDistance = stateController.AttackToTheAttackerWithTheBall;
@@ -26,8 +27,9 @@ public class PatrollingState : IPlayerState
         {
             GetFreeBall(stateController, baseAIBots);
         }
+   
     }
-
+    
     private void GetFreeBall(StateController stateController, BaseAIBots baseAIBots)
     {
         float distance = Vector3.Distance(baseAIBots.transform.position, BallManager.Instance.transform.position);

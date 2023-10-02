@@ -46,19 +46,9 @@ public class StateController : MonoBehaviour
             attackToTheAttackerWithTheBall = value;
         }
     }
-    public float AttackToTheBall
-    {
-        get
-        {
-            return attackToTheBall;
-        }
-        set
-        {
-            attackToTheBall = value;
-        }
-    }
     
     public Transform ClosestLocalPlayer { get; set; }
+    public Transform ClosestLocalPlayerToTheGoal { get; set; }
     public bool AlreadyPassed { get; set; }
 
     #endregion
@@ -66,6 +56,8 @@ public class StateController : MonoBehaviour
     private BaseAIBots _aiBots;
     private CharacterController _characterController;
     private List<StateController> _players = new List<StateController>();
+    
+    float closestDistance = float.MaxValue;
     
     private void Start()
     {
@@ -79,6 +71,18 @@ public class StateController : MonoBehaviour
     
     private void Update()
     {
+        GetClosestPlayerToTheGoal();
+        
+        GetClosestPlayer();
+        
+        if (_currentState != null)
+        {
+            _currentState.OnUpdate(this, _aiBots);
+        }
+    }
+
+    private void GetClosestPlayer()
+    {
         foreach (StateController player in _players)
         {
             var distance = (player.transform.position - transform.position).magnitude;
@@ -86,13 +90,41 @@ public class StateController : MonoBehaviour
             if (distance < canPassTheBallDistance && player.CompareTag("Bot") && player != this)
             {
                 ClosestLocalPlayer = player.transform;
+                canPassTheBallDistance = distance;
             }
         }
         
-        if (_currentState != null)
+        if (ClosestLocalPlayer != null)
         {
-            _currentState.OnUpdate(this, _aiBots);
+            
         }
+    }
+
+    
+    
+    public void ChangeThePassingState()
+    {
+        Invoke(nameof(ChangeThePassingStateLocal), 2f);
+    }
+
+    private void ChangeThePassingStateLocal()
+    {
+        AlreadyPassed = false;
+    }
+
+    private void GetClosestPlayerToTheGoal()
+    {
+        foreach (StateController player in _players)
+        {
+            var distance = (player.transform.position - _aiBots.FirstHalfGoalPosition.position).magnitude;
+
+            if (distance < closestDistance && player.CompareTag("Bot") && player != this)
+            {
+                closestDistance = distance;
+                ClosestLocalPlayerToTheGoal = player.transform;
+            }
+        }
+
     }
     
     public void ChangeState(IPlayerState newState, float time)

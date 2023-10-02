@@ -45,15 +45,19 @@ public class StandingState : IPlayerState
         switch (baseAIBots.BotType)
         {
             case BotType.ForwardLeft:
+                
                 break;
             
             case BotType.ForwardRight:
+                
                 break;
             
             case BotType.DefenderRightBack:
+                
                 break;
             
             case BotType.DefenderLeftBack:
+               
                 break;
         } 
     }

@@ -10,7 +10,7 @@ public class PassingState : IPlayerState
             BallManager.Instance.DetachBall(baseAIBots.transform);
 
             stateController.AlreadyPassed = true;
-            
+            stateController.ChangeThePassingState();
             stateController.ChangeState(stateController.standingState, 0f);
         }
     }
