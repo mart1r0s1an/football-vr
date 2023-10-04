@@ -48,22 +48,25 @@ public class StateController : MonoBehaviour
     }
     
     public Transform ClosestLocalPlayer { get; set; }
+    public Transform ClosestLocalOpponent { get; set; }
     public Transform ClosestLocalPlayerToTheGoal { get; set; }
     public bool AlreadyPassed { get; set; }
 
     #endregion
+    
     private IPlayerState _currentState;
     private BaseAIBots _aiBots;
-    private CharacterController _characterController;
     private List<StateController> _players = new List<StateController>();
+    private List<StateController> _opponents = new List<StateController>();
     
     float closestDistance = float.MaxValue;
     
     private void Start()
     {
         ClosestLocalPlayer = null;
-        _players = GameManager.Instance.allPlayers;
-        _characterController = GetComponent<CharacterController>();
+        ClosestLocalOpponent = null;
+        _players = GameManager.Instance.ourPlayers;
+        _opponents = GameManager.Instance.opponentPlayers;
         _aiBots = GetComponent<BaseAIBots>();
         
         ChangeState(standingState, 0f);
@@ -83,24 +86,33 @@ public class StateController : MonoBehaviour
 
     private void GetClosestPlayer()
     {
-        foreach (StateController player in _players)
+        if (CompareTag("Bot"))
         {
-            var distance = (player.transform.position - transform.position).magnitude;
-
-            if (distance < canPassTheBallDistance && player.CompareTag("Bot") && player != this)
+            foreach (StateController player in _players)
             {
-                ClosestLocalPlayer = player.transform;
-                canPassTheBallDistance = distance;
+                var distance = (player.transform.position - transform.position).magnitude;
+
+                if (distance < canPassTheBallDistance && player.CompareTag("Bot") && player != this)
+                {
+                    ClosestLocalPlayer = player.transform;
+                    canPassTheBallDistance = distance;
+                }
             }
         }
-        
-        if (ClosestLocalPlayer != null)
+        else if (CompareTag("BotOpponent"))
         {
-            
+            foreach (StateController player in _opponents)
+            {
+                var distance = (player.transform.position - transform.position).magnitude;
+
+                if (distance < canPassTheBallDistance && player.CompareTag("BotOpponent") && player != this)
+                {
+                    ClosestLocalOpponent = player.transform;
+                    canPassTheBallDistance = distance;
+                }
+            }
         }
     }
-
-    
     
     public void ChangeThePassingState()
     {
@@ -116,7 +128,7 @@ public class StateController : MonoBehaviour
     {
         foreach (StateController player in _players)
         {
-            var distance = (player.transform.position - _aiBots.FirstHalfGoalPosition.position).magnitude;
+            var distance = (player.transform.position - _aiBots.GoalPosition.position).magnitude;
 
             if (distance < closestDistance && player.CompareTag("Bot") && player != this)
             {
@@ -147,13 +159,13 @@ public class StateController : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, 35);
+        Gizmos.DrawWireSphere(transform.position, patrollingDistance);
         
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, 25);
+        Gizmos.DrawWireSphere(transform.position, attackToTheAttackerWithTheBall);
         
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, 15);
+        Gizmos.DrawWireSphere(transform.position, attackToTheBall);
     }
 }
 

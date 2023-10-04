@@ -5,31 +5,16 @@ public class BaseAIBots : PlayerBase
 {
     [Space(20f)]
     [SerializeField] private AIBotScriptable aIBotScriptable;
-
+    
     [Space(10f)] 
     [Header("Ball and Goals")]
-    public Transform FirstHalfGoalPosition;
-    public Transform SecondHalfGoalPosition;
+    public Transform GoalPosition;
     public Transform Ball;
     
     [Space(10f)]
     [Header("Bots type")]
     public BotType BotType;
-
     public LayerMask groundLayer;
-    
-    
-    [Space(20f)]
-    [Header("Start Bots Positions")]
-    #region StartPositions
-
-    public Transform ForwardRightStartPosition;
-    public Transform ForwardLeftStartPosition;
-    public Transform DefenderRightBackStartPosition;
-    public Transform DefenderLeftBackStartPosition;
-    public Transform GoalkeeperStartPosition;
-    
-    #endregion
     
     private float _kickForce;
 
@@ -75,25 +60,6 @@ public class BaseAIBots : PlayerBase
         IsPassingBallHash = Animator.StringToHash("isPassing");
         
         _kickForce = aIBotScriptable.KickForce;
-        
-        switch (BotType)
-        {
-            case BotType.ForwardLeft:
-                transform.position = ForwardLeftStartPosition.position;
-                break;
-
-            case BotType.ForwardRight:
-                transform.position = ForwardRightStartPosition.position;
-                break;
-            
-            case BotType.DefenderLeftBack:
-                transform.position = DefenderLeftBackStartPosition.position;
-                break;
-            
-            case BotType.DefenderRightBack:
-                transform.position = DefenderRightBackStartPosition.position;
-                break;
-        }
     }
 }
 

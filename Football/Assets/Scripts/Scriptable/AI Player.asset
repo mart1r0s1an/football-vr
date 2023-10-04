@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b2f8602273a4ce98931511026eabd43, type: 3}
   m_Name: AI Player
   m_EditorClassIdentifier: 
-  botSpeed: 15
+  botSpeed: 30
   patrollingRunSpeed: 5
   kickForce: 100
   gravity: 9.85

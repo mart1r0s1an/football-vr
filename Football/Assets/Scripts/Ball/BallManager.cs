@@ -11,8 +11,7 @@ public class BallManager : MonoBehaviour
     private Transform _localClosestPlayer;
     private Rigidbody _ballRigidbody;
     private Transform _attachedPlayer;
-    private List<StateController> _players = new List<StateController>();
-
+    
     private bool _ballAttached;
     
     public bool BallAttached
@@ -50,8 +49,6 @@ public class BallManager : MonoBehaviour
     {
         
         _ballRigidbody = GetComponentInChildren<Rigidbody>();
-
-        _players = GameManager.Instance.allPlayers;
     }
     
     
@@ -59,27 +56,6 @@ public class BallManager : MonoBehaviour
     {
         UpdateBallSpeedAndRotation();
     }
-
-    private Transform GetClosestPlayer()
-    {
-        _localClosestPlayer = null;
-        float shortestDistance = Mathf.Infinity;
-        
-        foreach (StateController player in _players)
-        {
-            float distance = Vector3.Distance(player.transform.position, _ball.position);
-            
-            if (distance < shortestDistance)
-            {
-                shortestDistance = distance;
-                _localClosestPlayer = player.transform;
-            }
-        }
-
-        return _localClosestPlayer;
-    }
-
-    
     
     public void KickTheBall(float kickForce)
     {

@@ -4,17 +4,27 @@ public class AttackState : IPlayerState
 {
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
-        Debug.Log(stateController.ClosestLocalPlayerToTheGoal);
+        if (stateController.CompareTag("Bot"))
+        {
+            Debug.Log(stateController.ClosestLocalPlayerToTheGoal);
 
-        if (Random.Range(0,2) == 0)
-        {
-            baseAIBots.transform.LookAt(stateController.ClosestLocalPlayerToTheGoal);
-            stateController.ChangeState(stateController.passingState, 0f);
+            if (Random.Range(0,2) == 0)
+            {
+                baseAIBots.transform.LookAt(stateController.ClosestLocalPlayerToTheGoal);
+                stateController.ChangeState(stateController.passingState, 0f);
+            }
         }
-        else
+        else if (stateController.CompareTag("BotOpponent"))
         {
-            return;
+            Debug.Log(stateController.ClosestLocalOpponent);
+
+            if (Random.Range(0,2) == 0)
+            {
+                baseAIBots.transform.LookAt(stateController.ClosestLocalOpponent);
+                stateController.ChangeState(stateController.passingState, 0f);
+            }
         }
+        
     }
     
     public void OnUpdate(StateController stateController, BaseAIBots baseAIBots)
@@ -26,7 +36,7 @@ public class AttackState : IPlayerState
                 case BotType.ForwardLeft:
                     
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
-                    Vector3 moveDirection = baseAIBots.FirstHalfGoalPosition.position
+                    Vector3 moveDirection = baseAIBots.GoalPosition.position
                                             - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
                     float distanceToGoal = moveDirection.magnitude;
@@ -35,7 +45,7 @@ public class AttackState : IPlayerState
                         moveDirection.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
         
                     baseAIBots.transform.position += moveSpeed;
-                    baseAIBots.transform.LookAt(baseAIBots.FirstHalfGoalPosition);
+                    baseAIBots.transform.LookAt(baseAIBots.GoalPosition);
                 
                     if (distanceToGoal <= 20f)
                     {
@@ -47,7 +57,7 @@ public class AttackState : IPlayerState
             
                 case BotType.ForwardRight:
                     baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
-                    Vector3 moveDirectionForRightBot = baseAIBots.FirstHalfGoalPosition.position
+                    Vector3 moveDirectionForRightBot = baseAIBots.GoalPosition.position
                                             - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
                     float distanceToGoalForRightForward = moveDirectionForRightBot.magnitude;
@@ -56,7 +66,7 @@ public class AttackState : IPlayerState
                         moveDirectionForRightBot.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
         
                     baseAIBots.transform.position += moveSpeedRight;
-                    baseAIBots.transform.LookAt(baseAIBots.FirstHalfGoalPosition);
+                    baseAIBots.transform.LookAt(baseAIBots.GoalPosition);
                 
                     if (distanceToGoalForRightForward <= 20f)
                     {
@@ -77,28 +87,6 @@ public class AttackState : IPlayerState
             }
         }
         
-        else if(!baseAIBots.HasBall)
-        {
-            switch (baseAIBots.BotType)
-            {
-                case BotType.ForwardLeft:
-                    stateController.ChangeState(stateController.standingState, 0f);
-                    break;
-            
-                case BotType.ForwardRight:
-                
-                    break;
-            
-                case BotType.DefenderLeftBack:
-               
-                
-                    break;
-            
-                case BotType.DefenderRightBack:
-                    
-                    break;  
-            }   
-        }
     }
     
     public void OnExit(StateController stateController, BaseAIBots baseAIBots)

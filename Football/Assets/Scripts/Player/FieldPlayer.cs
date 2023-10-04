@@ -33,14 +33,12 @@ public class FieldPlayer : PlayerBase
     private void FixedUpdate()
     {
         Movement();
-        GroundCheck();
         Gravity();
     }
 
     protected override void GetDataForPlayer()
     {
         KickForce = PlayerScriptable.KickForce;
-        JumpForce = PlayerScriptable.JumpForce;
         PlayerSpeed = PlayerScriptable.PlayerSpeed;
         gravity = PlayerScriptable.Gravity;
     }
@@ -114,7 +112,7 @@ public class FieldPlayer : PlayerBase
         KickForce = 30;
     }
 
-    protected override void GroundCheck()
+    /*protected override void GroundCheck()
     {
         isGrounded = Physics.CheckSphere(checkGroundPosition.position, checkGroundPositionRadius, checkGroundLayer);
 
@@ -122,7 +120,7 @@ public class FieldPlayer : PlayerBase
         {
             _velocity.y = -2f;
         }
-    }
+    }*/
 
     protected override void Gravity()
     {
