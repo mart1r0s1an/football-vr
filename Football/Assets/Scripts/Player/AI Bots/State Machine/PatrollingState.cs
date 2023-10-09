@@ -16,7 +16,10 @@ public class PatrollingState : IPlayerState
 
     public void OnUpdate(StateController stateController, BaseAIBots baseAIBots)
     {
-        Patrolling(baseAIBots);
+        if (stateController.CompareTag("Bot"))
+            Patrolling(baseAIBots, 15);
+        else if (stateController.CompareTag("BotOpponent"))
+            Patrolling(baseAIBots, 190);
         
         if (stateController.ClosestLocalPlayer != null && stateController.CompareTag("Bot"))
         {
@@ -256,10 +259,10 @@ public class PatrollingState : IPlayerState
         }
     }
     
-    private void Patrolling(BaseAIBots botTransform)
+    private void Patrolling(BaseAIBots botTransform, float radius)
     {
         if (!_walkPointSet) 
-            SearchWalkPoint(botTransform);
+            SearchWalkPoint(botTransform, radius);
         
         Vector3 movedDirection = 
             _walkPoint - new Vector3(botTransform.transform.position.x, 0, botTransform.transform.position.z);
@@ -279,14 +282,35 @@ public class PatrollingState : IPlayerState
             _walkPointSet = false;
     }
 
-    private void SearchWalkPoint(BaseAIBots botTransform)
+    private void SearchWalkPoint(BaseAIBots botTransform, float radius)
     {
-        float randomZ = Random.Range(-15, 15);
-        float randomX = Random.Range(-15, 15);
+        /*float randomZ = Random.Range(-range, range);
+        float randomX = Random.Range(-range, range);
         
         _walkPoint = new Vector3(botTransform.transform.position.x + randomX, 
             botTransform.transform.position.y, botTransform.transform.position.z + randomZ);
-    
+        
+        if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f, botTransform.groundLayer))
+        {
+            _walkPointSet = true;   
+        }*/
+        
+        // Calculate a random angle in degrees
+        float randomAngle = Random.Range(0f, 360f);
+
+        // Convert the angle to radians
+        float angleInRadians = randomAngle * Mathf.Deg2Rad;
+
+        // Calculate the random position within the circle
+        float x = radius * Mathf.Cos(angleInRadians);
+        float z = radius * Mathf.Sin(angleInRadians);
+
+        // Set the _walkPoint to the new position within the circle centered around the player
+        _walkPoint = new Vector3(botTransform.transform.position.x + x, 
+            botTransform.transform.position.y, 
+            botTransform.transform.position.z + z);
+
+        // Perform a raycast to ensure the new position is on the ground
         if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f, botTransform.groundLayer))
         {
             _walkPointSet = true;   
