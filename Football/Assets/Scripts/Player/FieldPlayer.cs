@@ -1,4 +1,5 @@
 using System.Collections;
+using Photon.Pun;
 using UnityEngine;
 
 public class FieldPlayer : PlayerBase
@@ -48,7 +49,7 @@ public class FieldPlayer : PlayerBase
     {
         Vector3 movement = new Vector3(-_vertical, 0f, _horizontal);
 
-        playerCharacterController.Move(movement * PlayerSpeed * Time.deltaTime);
+        playerCharacterController.Move(movement * PlayerSpeed * 0.2f);
 
 
         if (_horizontal > 0 || _vertical > 0 || _horizontal < 0 || _vertical < 0)
@@ -57,6 +58,7 @@ public class FieldPlayer : PlayerBase
             transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, 360);
         }
     }
+    
 
     protected override void BallKick(float kickForce)
     {

@@ -1,7 +1,8 @@
+using Photon.Pun;
 using Scriptable;
 using UnityEngine;
 
-public class PlayerBase : MonoBehaviour
+public class PlayerBase : MonoBehaviourPunCallbacks
 {
     #region Field
 
@@ -48,6 +49,7 @@ public class PlayerBase : MonoBehaviour
     protected float PlayerSpeed;
     protected float KickForce;
     protected float gravity;
+    
     
     #endregion
 

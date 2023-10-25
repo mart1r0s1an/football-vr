@@ -1,15 +1,20 @@
+using System;
+using Photon.Pun;
 using Scriptable;
 using UnityEngine;
 
 public class BaseAIBots : PlayerBase
 {
+    private PhotonView _photonView;
+    
     [Space(20f)]
     [SerializeField] private AIBotScriptable aIBotScriptable;
     
     [Space(10f)] 
     [Header("Ball and Goals")]
-    public Transform GoalPosition;
-    public Transform Ball;
+    public GameObject GoalPosition;
+    public GameObject GoalPositionForOpponent;
+    public GameObject Ball;
     
     [Space(10f)]
     [Header("Bots type")]
@@ -58,6 +63,11 @@ public class BaseAIBots : PlayerBase
         IsRunningWithOutBallHash = Animator.StringToHash("isRunningWithOutBall");
         IsRunningWithBallHash = Animator.StringToHash("isRunningWithBall");
         IsPassingBallHash = Animator.StringToHash("isPassing");
+
+        /*GoalPosition = GameObject.Find("First Goal");
+        GoalPositionForOpponent = GameObject.Find("Second Goal");*/
+        
+        //Ball = GameObject.Find("Ball(Clone)");
         
         _kickForce = aIBotScriptable.KickForce;
     }

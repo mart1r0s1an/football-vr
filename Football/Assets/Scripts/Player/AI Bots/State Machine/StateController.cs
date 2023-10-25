@@ -128,7 +128,7 @@ public class StateController : MonoBehaviour
     {
         foreach (StateController player in _players)
         {
-            var distance = (player.transform.position - _aiBots.GoalPosition.position).magnitude;
+            var distance = (player.transform.position - _aiBots.GoalPosition.transform.position).magnitude;
 
             if (distance < closestDistance && player.CompareTag("Bot") && player != this)
             {

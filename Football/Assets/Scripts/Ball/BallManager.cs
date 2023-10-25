@@ -1,8 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
+using Photon.Pun;
 using UnityEngine;
 
-public class BallManager : MonoBehaviour
+public class BallManager : MonoBehaviourPunCallbacks
 {
     public static BallManager Instance { get; private set; }
     
@@ -31,11 +32,16 @@ public class BallManager : MonoBehaviour
     private Vector3 _speedBall;
     private Vector3 _previousPositionBall;
     
+    [SerializeField] private PhotonView photonView;
+    
     private void Awake()
     {
+        _ballRigidbody = GetComponentInChildren<Rigidbody>();
+        
         if (Instance != null && Instance != this) 
         { 
             Destroy(this); 
+            return;
         } 
         else 
         { 
@@ -44,13 +50,6 @@ public class BallManager : MonoBehaviour
         
         _ball = this.transform;
     }
-
-    private void Start()
-    {
-        
-        _ballRigidbody = GetComponentInChildren<Rigidbody>();
-    }
-    
     
     private void Update()
     {
@@ -59,6 +58,9 @@ public class BallManager : MonoBehaviour
     
     public void KickTheBall(float kickForce)
     {
+        GameObject goalKeeper = GameObject.Find("Goalkeeper(Clone)");
+        goalKeeper.GetComponent<GoalkeeperAI>().AnimationStateCanChange = true;
+        
         _ballRigidbody.isKinematic = false;
         _ball.parent = null;
         

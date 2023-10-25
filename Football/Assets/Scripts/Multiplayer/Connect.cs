@@ -20,7 +20,8 @@ public class Connect : MonoBehaviourPunCallbacks
         {
             PhotonNetwork.JoinLobby();
         }
-        
+
+        PhotonNetwork.JoinLobby();
     }
 
     public override void OnDisconnected(DisconnectCause cause)

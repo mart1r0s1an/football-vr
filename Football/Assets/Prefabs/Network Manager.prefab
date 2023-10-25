@@ -1,0 +1,77 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4885501833381838113
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 738896837026319245}
+  - component: {fileID: 946908332582550508}
+  - component: {fileID: 866199550162172040}
+  m_Layer: 0
+  m_Name: Network Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &738896837026319245
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885501833381838113}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &946908332582550508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885501833381838113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0f38d82f4c4760408a7fb0a0496d446, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &866199550162172040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4885501833381838113}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e55c0aa68bbd028438adae591f08605f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 477047998022790180, guid: 62a8e40b8441ab84c85104fbaee70ec9,
+    type: 3}
+  ballPosition: {x: 0, y: 0.4, z: 0}
+  ourPlayersPositions:
+  - {x: 24.6, y: 0, z: 15.6}
+  - {x: -24.6, y: 0, z: 15.6}
+  - {x: 46.5, y: 0, z: 94.4}
+  - {x: -47.6, y: 0, z: 94.4}
+  opponentPlayersPositions:
+  - {x: 24.6, y: 0, z: -15.6}
+  - {x: -47.6, y: 0, z: -25.3}
+  - {x: 46.5, y: 0, z: -94.4}
+  - {x: -47.6, y: 0, z: -94.4}
+  goalKeepersPositions:
+  - {x: 0, y: 0, z: -120}
+  - {x: 0, y: 0, z: 120}
+  ourPlayers: []
+  opponentPlayers: []

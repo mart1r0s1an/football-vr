@@ -31,59 +31,114 @@ public class AttackState : IPlayerState
     {
         if (baseAIBots.HasBall)
         {
-            switch (baseAIBots.BotType)
+            if (stateController.CompareTag("Bot"))
             {
-                case BotType.ForwardLeft:
+                switch (baseAIBots.BotType)
+                {
+                    case BotType.ForwardLeft:
                     
-                    baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
-                    Vector3 moveDirection = baseAIBots.GoalPosition.position
-                                            - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
+                        Vector3 moveDirection = baseAIBots.GoalPosition.transform.position
+                                                - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
-                    float distanceToGoal = moveDirection.magnitude;
+                        float distanceToGoal = moveDirection.magnitude;
         
-                    Vector3 moveSpeed = new Vector3(moveDirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
-                        moveDirection.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
+                        Vector3 moveSpeed = new Vector3(moveDirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                            moveDirection.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
         
-                    baseAIBots.transform.position += moveSpeed;
-                    baseAIBots.transform.LookAt(baseAIBots.GoalPosition);
+                        baseAIBots.transform.position += moveSpeed;
+                        baseAIBots.transform.LookAt(baseAIBots.GoalPosition.transform);
                 
-                    if (distanceToGoal <= 20f)
-                    {
-                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
-                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
-                        stateController.ChangeState(stateController.kickingState, 0f);
-                    }
-                    break;
+                        if (distanceToGoal <= 20f)
+                        {
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
+                            stateController.ChangeState(stateController.kickingState, 0f);
+                        }
+                        break;
             
-                case BotType.ForwardRight:
-                    baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
-                    Vector3 moveDirectionForRightBot = baseAIBots.GoalPosition.position
-                                            - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+                    case BotType.ForwardRight:
+                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
+                        Vector3 moveDirectionForRightBot = baseAIBots.GoalPosition.transform.position
+                                                           - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
         
-                    float distanceToGoalForRightForward = moveDirectionForRightBot.magnitude;
+                        float distanceToGoalForRightForward = moveDirectionForRightBot.magnitude;
         
-                    Vector3 moveSpeedRight = new Vector3(moveDirectionForRightBot.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
-                        moveDirectionForRightBot.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
+                        Vector3 moveSpeedRight = new Vector3(moveDirectionForRightBot.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                            moveDirectionForRightBot.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
         
-                    baseAIBots.transform.position += moveSpeedRight;
-                    baseAIBots.transform.LookAt(baseAIBots.GoalPosition);
+                        baseAIBots.transform.position += moveSpeedRight;
+                        baseAIBots.transform.LookAt(baseAIBots.GoalPosition.transform);
                 
-                    if (distanceToGoalForRightForward <= 20f)
-                    {
-                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
-                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
-                        stateController.ChangeState(stateController.kickingState, 0f);
-                    }
-                    break;
+                        if (distanceToGoalForRightForward <= 20f)
+                        {
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
+                            stateController.ChangeState(stateController.kickingState, 0f);
+                        }
+                        break;
             
-                case BotType.DefenderLeftBack:
-               
+                    case BotType.DefenderLeftBack:
+                        break;
+            
+                    case BotType.DefenderRightBack:
+                        break;            
+                }
+            }
+            else if (stateController.CompareTag("BotOpponent"))
+
+            {
+                switch (baseAIBots.BotType)
+                {
+                    case BotType.ForwardLeft:
+                    
+                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
+                        Vector3 moveDirection = baseAIBots.GoalPositionForOpponent.transform.position
+                                                - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+        
+                        float distanceToGoal = moveDirection.magnitude;
+        
+                        Vector3 moveSpeed = new Vector3(moveDirection.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                            moveDirection.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
+        
+                        baseAIBots.transform.position += moveSpeed;
+                        baseAIBots.transform.LookAt(baseAIBots.GoalPositionForOpponent.transform);
                 
-                    break;
+                        if (distanceToGoal <= 20f)
+                        {
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
+                            stateController.ChangeState(stateController.kickingState, 0f);
+                        }
+                        break;
             
-                case BotType.DefenderRightBack:
-                    stateController.ChangeState(stateController.patrollingState, 0f);
-                    break;            
+                    case BotType.ForwardRight:
+                        baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, true);
+                        Vector3 moveDirectionForRightBot = baseAIBots.GoalPositionForOpponent.transform.position
+                                                           - new Vector3(baseAIBots.transform.position.x, 0, baseAIBots.transform.position.z);
+        
+                        float distanceToGoalForRightForward = moveDirectionForRightBot.magnitude;
+        
+                        Vector3 moveSpeedRight = new Vector3(moveDirectionForRightBot.normalized.x * baseAIBots.RunSpeed * Time.deltaTime, 0,
+                            moveDirectionForRightBot.normalized.z * baseAIBots.RunSpeed * Time.deltaTime);
+        
+                        baseAIBots.transform.position += moveSpeedRight;
+                        baseAIBots.transform.LookAt(baseAIBots.GoalPositionForOpponent.transform);
+                
+                        if (distanceToGoalForRightForward <= 20f)
+                        {
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithBallHash, false);
+                            baseAIBots.BotAnimatorController.SetBool(baseAIBots.IsRunningWithOutBallHash, false);
+                            stateController.ChangeState(stateController.kickingState, 0f);
+                        }
+                        break;
+            
+                    case BotType.DefenderLeftBack:
+                        break;
+            
+                    case BotType.DefenderRightBack:
+                        break;            
+                }
             }
         }
         

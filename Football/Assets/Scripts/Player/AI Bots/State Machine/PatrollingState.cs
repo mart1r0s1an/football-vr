@@ -2,24 +2,24 @@ using UnityEngine;
 
 public class PatrollingState : IPlayerState
 {
-    private bool _walkPointSet;
-    private Vector3 _walkPoint;
-    
     private float _shortestDistance;
     private float _canPassTheBallDistance;
-    private float _timeBoolSetTrue = 3f;
+    
+    private readonly float _patrolRadius = 10f;
+    private Vector3 _initialPosition;
+    private Vector3 _currentDestination;
     
     public void OnEnter(StateController stateController, BaseAIBots baseAIBots)
     {
+        _initialPosition = baseAIBots.transform.position;
+        SetRandomDestination(baseAIBots);
+        
         _shortestDistance = stateController.AttackToTheAttackerWithTheBall;
     }
 
     public void OnUpdate(StateController stateController, BaseAIBots baseAIBots)
     {
-        if (stateController.CompareTag("Bot"))
-            Patrolling(baseAIBots, 15);
-        else if (stateController.CompareTag("BotOpponent"))
-            Patrolling(baseAIBots, 190);
+        Patrolling(baseAIBots);
         
         if (stateController.ClosestLocalPlayer != null && stateController.CompareTag("Bot"))
         {
@@ -259,63 +259,41 @@ public class PatrollingState : IPlayerState
         }
     }
     
-    private void Patrolling(BaseAIBots botTransform, float radius)
+    private void Patrolling(BaseAIBots botTransform)
     {
-        if (!_walkPointSet) 
-            SearchWalkPoint(botTransform, radius);
+        Vector3 moveDirection = (_currentDestination - botTransform.transform.position).normalized;
+        botTransform.transform.position = 
+            Vector3.MoveTowards(botTransform.transform.position, 
+                _currentDestination, botTransform.PatrollingStateRunSpeed * Time.deltaTime);
         
-        Vector3 movedDirection = 
-            _walkPoint - new Vector3(botTransform.transform.position.x, 0, botTransform.transform.position.z);
-    
-        Vector3 moveSpeed = new Vector3(movedDirection.normalized.x * botTransform.PatrollingStateRunSpeed * Time.deltaTime, 0,
-            movedDirection.normalized.z * botTransform.PatrollingStateRunSpeed * Time.deltaTime);
-
-        if (_walkPointSet)
+        if (moveDirection != Vector3.zero)
         {
-            botTransform.transform.position += moveSpeed;
-            botTransform.transform.LookAt(_walkPoint);
+            Quaternion rotation = Quaternion.LookRotation(_currentDestination - botTransform.transform.position, Vector3.up);
+            botTransform.transform.rotation = rotation;
         }
-    
-        Vector3 distanceToWalkPoint = botTransform.transform.position - _walkPoint;
-    
-        if (distanceToWalkPoint.magnitude < 1f)
-            _walkPointSet = false;
-    }
-
-    private void SearchWalkPoint(BaseAIBots botTransform, float radius)
-    {
-        /*float randomZ = Random.Range(-range, range);
-        float randomX = Random.Range(-range, range);
         
-        _walkPoint = new Vector3(botTransform.transform.position.x + randomX, 
-            botTransform.transform.position.y, botTransform.transform.position.z + randomZ);
-        
-        if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f, botTransform.groundLayer))
+        if (Vector3.Distance(botTransform.transform.position, _currentDestination) < 0.1f)
         {
-            _walkPointSet = true;   
-        }*/
-        
-        // Calculate a random angle in degrees
+            SetRandomDestination(botTransform);
+        }
+    }
+    
+    private void SetRandomDestination(BaseAIBots botTransform)
+    {
         float randomAngle = Random.Range(0f, 360f);
-
-        // Convert the angle to radians
         float angleInRadians = randomAngle * Mathf.Deg2Rad;
+        
+        float x = _initialPosition.x + _patrolRadius * Mathf.Cos(angleInRadians);
+        float z = _initialPosition.z + _patrolRadius * Mathf.Sin(angleInRadians);
 
-        // Calculate the random position within the circle
-        float x = radius * Mathf.Cos(angleInRadians);
-        float z = radius * Mathf.Sin(angleInRadians);
-
-        // Set the _walkPoint to the new position within the circle centered around the player
-        _walkPoint = new Vector3(botTransform.transform.position.x + x, 
-            botTransform.transform.position.y, 
-            botTransform.transform.position.z + z);
-
-        // Perform a raycast to ensure the new position is on the ground
-        if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 2f, botTransform.groundLayer))
-        {
-            _walkPointSet = true;   
-        }
+        _currentDestination = new Vector3(x, botTransform.transform.position.y, z);
     }
+    
+    /*if (Physics.Raycast(_walkPoint, -botTransform.transform.up, 10f, botTransform.groundLayer))
+    {
+        _walkPointSet = true;
+    }
+    */
     
     public void OnExit(StateController stateController, BaseAIBots baseAIBots)
     {
